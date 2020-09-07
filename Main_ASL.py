@@ -157,4 +157,6 @@ with tf.device('/GPU:0'):
     
     img = model.predict(trainingData[134,:,:,:])
     plt.imshow(img);plt.show()
+    
+    print('FIN')
 
