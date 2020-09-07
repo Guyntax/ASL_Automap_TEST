@@ -8,8 +8,8 @@ from random import randrange
 
 
 #%%
-path = r"C:/Users/Admin/Documents/Python/UPIR/npy/"
-#path = r"/home/didier/Documents/ASL_data/"
+#path = r"C:/Users/Admin/Documents/Python/UPIR/npy/"
+path = r"/home/didier/Documents/ASL_data/"
 
 data = np.zeros([1,128,128,210])
 for i in range(0,1):
@@ -30,7 +30,7 @@ def prepareData(data):
     bigx = np.empty((imgs, row, col, 2))
     print('Preparing data')
     for i in range(imgs):
-        #print(str(i+1)+ ' of ' +str(imgs-1))
+        print(str(i+1)+ ' of ' +str(imgs-1))
         bigx[i, :, :, :] = create_x(np.squeeze(bigy[i,:,:]), normalize=False)
         
     # convert bigx from complex to abs values
