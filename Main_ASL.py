@@ -8,8 +8,8 @@ from random import randrange
 
 
 #%%
-#path = r"C:/Users/Admin/Documents/Python/UPIR/npy/"
-path = r"/home/didier/Documents/ASL_data/"
+path = r"C:/Users/Admin/Documents/Python/UPIR/npy/"
+#path = r"/home/didier/Documents/ASL_data/"
 
 data = np.zeros([1,128,128,210])
 for i in range(0,1):
@@ -19,7 +19,7 @@ for i in range(0,1):
 def prepareData(data):
     index, row, col,sli = data.shape
     
-    temp = np.transpose(data, (1,2,0,3))   
+    temp = np.transpose(data, (1,2,0,3))    
     temp = np.reshape(temp,(row,col,-1))
     bigy = np.transpose(temp, (2,0,1))
     #print(bigy.shape)
@@ -30,7 +30,7 @@ def prepareData(data):
     bigx = np.empty((imgs, row, col, 2))
     print('Preparing data')
     for i in range(imgs):
-        print(str(i+1)+ ' of ' +str(imgs-1))
+        print(str(i+1)+ ' of ' +str(imgs))
         bigx[i, :, :, :] = create_x(np.squeeze(bigy[i,:,:]), normalize=False)
         
     # convert bigx from complex to abs values
@@ -112,9 +112,17 @@ targetData = prepareData(data)
 del data
 trainingData = createTrainingData(targetData,percentage)
 
+# targetData = [None]*np.shape(targetData0)[0]
+# trainingData = [None]*np.shape(targetData0)[0]
+# for i in range(0,np.shape(targetData0)[0]):
+#     targetData[i] = targetData0[i,:,:,:]
+#     trainingData[i] = trainingData0[i,:,:,:]
+    
+
+
 toc1 = time.time()
 print('Time to load and prepare data = ', (toc1 - tic1))
-print('trainingData.shape at input = ', targetData.shape)
+#print('trainingData.shape at input = ', targetData.shape)
 #%%
 
 
@@ -135,17 +143,21 @@ print('trainingData.shape at input = ', targetData.shape)
 tf.debugging.set_log_device_placement(True)
 with tf.device('/GPU:0'):
 
-    (m, n_H0, n_W0, _) = trainingData.shape
+    #(m, n_H0, n_W0, _) = trainingData.shape
+    m = len(trainingData)
+    (n_H0, n_W0, _) = trainingData[0].shape
     
-    tf.compat.v1.disable_eager_execution()
-    trainPlaceHolder = tf.compat.v1.placeholder(tf.float32, shape=[None, n_H0, n_W0, 2], name='x')
+    # tf.compat.v1.disable_eager_execution()
+    # trainPlaceHolder = tf.compat.v1.placeholder(tf.float32, shape=[None, n_H0, n_W0, 2], name='x')
     
-    train_temp = tf.keras.layers.Flatten()(trainPlaceHolder)  # size (n_im, n_H0 * n_W0 * 2)
-    n_out = np.int(trainPlaceHolder.shape[1] * trainPlaceHolder.shape[2])  # size (n_im, n_H0 * n_W0)
+    # train_temp = tf.keras.layers.Flatten()(trainPlaceHolder)  # size (n_im, n_H0 * n_W0 * 2)
+    # n_out = np.int(trainPlaceHolder.shape[1] * trainPlaceHolder.shape[2])  # size (n_im, n_H0 * n_W0)
     
     model = tf.keras.Sequential()
-    model.add(tf.keras.layers.Dense(train_temp.shape[1]))
-    model.add(tf.keras.layers.Dense(n_out))
+    model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0 * 2)))
+    #model.add(tf.keras.layers.Dense(n_out))
+    model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
+    
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
     model.add(tf.keras.layers.Conv2D(1, 7, strides=(1, 1), padding='same'))
