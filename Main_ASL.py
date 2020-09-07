@@ -133,7 +133,7 @@ print('trainingData.shape at input = ', targetData.shape)
 
 #%%
 tf.debugging.set_log_device_placement(True)
-with tf.device('/CPU:0'):
+with tf.device('/GPU:0'):
 
     (m, n_H0, n_W0, _) = trainingData.shape
     
