@@ -155,7 +155,7 @@ with tf.device('/GPU:0'):
     
     model = tf.keras.Sequential()
     model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0 * 2)))
-    #model.add(tf.keras.layers.Dense(n_out))
+    model.add(tf.keras.layers.Dense(n_H0*2))
     model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
     
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
