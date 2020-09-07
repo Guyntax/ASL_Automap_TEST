@@ -156,5 +156,5 @@ model.fit(trainingData, targetData, batch_size=None, epochs=1, verbose=1)
 
 img = model.predict(trainingData[134,:,:,:])
 
-plt.imshow(img)
+plt.imshow(img);plt.show()
 
