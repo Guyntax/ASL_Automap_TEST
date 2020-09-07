@@ -143,9 +143,9 @@ print('Time to load and prepare data = ', (toc1 - tic1))
 tf.debugging.set_log_device_placement(True)
 with tf.device('/GPU:0'):
 
-    #(m, n_H0, n_W0, _) = trainingData.shape
-    m = len(trainingData)
-    (n_H0, n_W0, _) = trainingData[0].shape
+    (m, n_H0, n_W0, _) = trainingData.shape
+    # m = len(trainingData)
+    # (n_H0, n_W0, _) = trainingData[0].shape
     
     # tf.compat.v1.disable_eager_execution()
     # trainPlaceHolder = tf.compat.v1.placeholder(tf.float32, shape=[None, n_H0, n_W0, 2], name='x')
