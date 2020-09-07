@@ -132,6 +132,9 @@ print('trainingData.shape at input = ', targetData.shape)
 
 
 #%%
+from keras import backend as K
+K.tensorflow_backend._get_available_gpus()
+
 (m, n_H0, n_W0, _) = trainingData.shape
 
 tf.compat.v1.disable_eager_execution()
