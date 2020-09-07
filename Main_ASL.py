@@ -132,29 +132,29 @@ print('trainingData.shape at input = ', targetData.shape)
 
 
 #%%
-from tensorflow.keras import backend as K
-K.tensorflow_backend._get_available_gpus()
+tf.debugging.set_log_device_placement(True)
+with tf.device('/CPU:0'):
 
-(m, n_H0, n_W0, _) = trainingData.shape
+    (m, n_H0, n_W0, _) = trainingData.shape
+    
+    tf.compat.v1.disable_eager_execution()
+    trainPlaceHolder = tf.compat.v1.placeholder(tf.float32, shape=[None, n_H0, n_W0, 2], name='x')
+    
+    train_temp = tf.keras.layers.Flatten()(trainPlaceHolder)  # size (n_im, n_H0 * n_W0 * 2)
+    n_out = np.int(trainPlaceHolder.shape[1] * trainPlaceHolder.shape[2])  # size (n_im, n_H0 * n_W0)
+    
+    model = tf.keras.Sequential()
+    model.add(tf.keras.layers.Dense(train_temp.shape[1]))
+    model.add(tf.keras.layers.Dense(n_out))
+    model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
+    model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
+    model.add(tf.keras.layers.Conv2D(1, 7, strides=(1, 1), padding='same'))
 
-tf.compat.v1.disable_eager_execution()
-trainPlaceHolder = tf.compat.v1.placeholder(tf.float32, shape=[None, n_H0, n_W0, 2], name='x')
-
-train_temp = tf.keras.layers.Flatten()(trainPlaceHolder)  # size (n_im, n_H0 * n_W0 * 2)
-n_out = np.int(trainPlaceHolder.shape[1] * trainPlaceHolder.shape[2])  # size (n_im, n_H0 * n_W0)
-
-model = tf.keras.Sequential()
-model.add(tf.keras.layers.Dense(train_temp.shape[1]))
-model.add(tf.keras.layers.Dense(n_out))
-model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
-model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
-model.add(tf.keras.layers.Conv2D(1, 7, strides=(1, 1), padding='same'))
-
-#%%
-model.compile(optimizer='adam', loss=tf.keras.losses.sparse_categorical_crossentropy)
-model.fit(trainingData, targetData, batch_size=None, epochs=1, verbose=1)
-
-#%%
-img = model.predict(trainingData[134,:,:,:])
-plt.imshow(img);plt.show()
+    
+    model.compile(optimizer='adam', loss=tf.keras.losses.sparse_categorical_crossentropy)
+    model.fit(trainingData, targetData, batch_size=None, epochs=1, verbose=1)
+    
+    
+    img = model.predict(trainingData[134,:,:,:])
+    plt.imshow(img);plt.show()
 
