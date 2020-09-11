@@ -141,46 +141,32 @@ print('Time to load and prepare data = ', (toc1 - tic1))
 
 #%%
 tf.debugging.set_log_device_placement(True)
-with tf.device('/GPU:0'):
+#with tf.device('/GPU:0'):
 
-    (m, n_H0, n_W0, _) = trainingData.shape
-    # m = len(trainingData)
-    # (n_H0, n_W0, _) = trainingData[0].shape
-    
-    # tf.compat.v1.disable_eager_execution()
-    # trainPlaceHolder = tf.compat.v1.placeholder(tf.float32, shape=[None, n_H0, n_W0, 2], name='x')
-    
-    # train_temp = tf.keras.layers.Flatten()(trainPlaceHolder)  # size (n_im, n_H0 * n_W0 * 2)
-    # n_out = np.int(trainPlaceHolder.shape[1] * trainPlaceHolder.shape[2])  # size (n_im, n_H0 * n_W0)
-    
-    model = tf.keras.Sequential()
-    # model.add(tf.keras.layers.Flatten(input_shape = (32768,)))
-    # # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
-    # model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
-    # model.add(tf.keras.layers.Reshape((n_H0,n_W0,1)))
-    # 
-    model.add(tf.keras.layers.Conv2D(16, 5, strides=(1, 1), padding='same',input_shape=(128,128,2)))
+(m, n_H0, n_W0, _) = trainingData.shape
 
-    model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
-    model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
-    model.add(tf.keras.layers.Conv2DTranspose(2, 7, strides=(1, 1), padding='same'))
-    #model.add(tf.keras.layers.Flatten())
-    
-    #model.add(tf.keras.layers.Flatten(input_shape = (32768/2,)))
-    # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
-    #model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0*2)))
-    #model.add(tf.keras.layers.Reshape((-1,n_H0,n_W0,2)))
-    
+model = tf.keras.Sequential()
+# model.add(tf.keras.layers.Flatten(input_shape = (32768,)))
+# # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
+# model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
+# model.add(tf.keras.layers.Reshape((n_H0,n_W0,1)))
+# 
+model.add(tf.keras.layers.Conv2D(16, 5, strides=(1, 1), padding='same',input_shape=(128,128,2)))
 
-    
-    model.compile(optimizer='adam', loss=tf.keras.losses.categorical_crossentropy)
-    model.summary()
-    
-    model.fit(trainingData, targetData, batch_size=10, epochs=5, verbose=1)
-    img = model.predict(tf.reshape(trainingData[134,:,:,:],(1,128,128,2)))
-    #
-    plt.imshow(to_space_domain(img)[0,:,:])
-    plt.savefig("output.png")
-    
-    print('FIN')
+model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
+model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
+model.add(tf.keras.layers.Conv2DTranspose(2, 7, strides=(1, 1), padding='same'))
+
+
+
+model.compile(optimizer='adam', loss=tf.keras.losses.categorical_crossentropy)
+model.summary()
+
+model.fit(trainingData, targetData, batch_size=10, epochs=5, verbose=1)
+img = model.predict(tf.reshape(trainingData[134,:,:,:],(1,128,128,2)))
+#
+plt.imshow(to_space_domain(img)[0,:,:])
+plt.savefig("output.png")
+
+print('FIN')
 
