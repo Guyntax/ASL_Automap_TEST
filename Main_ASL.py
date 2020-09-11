@@ -12,7 +12,7 @@ from random import randrange
 path = r"/home/didier/Documents/ASL_data/"
 
 data = np.zeros([1,128,128,210])
-for i in range(0,1):
+for i in range(0,96):
     data[i,:,:,:]= np.load(path+"ASL_data{}.npy".format(i))
    # print(i)
 #%%
@@ -162,7 +162,7 @@ model.add(tf.keras.layers.Conv2DTranspose(2, 7, strides=(1, 1), padding='same'))
 model.compile(optimizer='adam', loss=tf.keras.losses.categorical_crossentropy)
 model.summary()
 
-model.fit(trainingData, targetData, batch_size=10, epochs=5, verbose=1)
+model.fit(trainingData, targetData, batch_size=100, epochs=10, verbose=1)
 img = model.predict(tf.reshape(trainingData[134,:,:,:],(1,128,128,2)))
 #
 plt.imshow(to_space_domain(img)[0,:,:])
