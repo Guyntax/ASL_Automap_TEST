@@ -176,7 +176,7 @@ with tf.device('/GPU:0'):
     model.compile(optimizer='adam', loss=tf.keras.losses.sparse_categorical_crossentropy)
     model.summary()
     
-    model.fit(trainingData, targetData, batch_size=None, epochs=1, verbose=1)
+    model.fit(trainingData, targetData, batch_size=1, epochs=1, verbose=1)
     img = model.predict(trainingData[134,:,:,:])
     #
     plt.imshow(img);plt.show()
