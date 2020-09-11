@@ -164,7 +164,7 @@ with tf.device('/GPU:0'):
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
     model.add(tf.keras.layers.Conv2DTranspose(2, 7, strides=(1, 1), padding='same'))
-    model.add(tf.keras.layers.Flatten())
+    #model.add(tf.keras.layers.Flatten())
     
     #model.add(tf.keras.layers.Flatten(input_shape = (32768/2,)))
     # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
@@ -173,7 +173,7 @@ with tf.device('/GPU:0'):
     
 
     
-    model.compile(optimizer='adam', loss=tf.keras.losses.sparse_categorical_crossentropy)
+    model.compile(optimizer='adam', loss=tf.keras.losses.categorical_crossentropy)
     model.summary()
     
     model.fit(trainingData, targetData, batch_size=1, epochs=1, verbose=1)
