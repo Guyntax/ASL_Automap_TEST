@@ -154,11 +154,13 @@ with tf.device('/GPU:0'):
     # n_out = np.int(trainPlaceHolder.shape[1] * trainPlaceHolder.shape[2])  # size (n_im, n_H0 * n_W0)
     
     model = tf.keras.Sequential()
-    model.add(tf.keras.layers.Flatten(input_shape = (32768,)))
-    # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
-    model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
-    model.add(tf.keras.layers.Reshape((n_H0,n_W0,1)))
-    
+    # model.add(tf.keras.layers.Flatten(input_shape = (32768,)))
+    # # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
+    # model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
+    # model.add(tf.keras.layers.Reshape((n_H0,n_W0,1)))
+    # 
+    model.add(tf.keras.layers.Conv2D(16, 5, strides=(1, 1), padding='same',input_shape=(128,128,2)))
+
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
     model.add(tf.keras.layers.Conv2DTranspose(2, 7, strides=(1, 1), padding='same'))
