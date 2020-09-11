@@ -179,7 +179,8 @@ with tf.device('/GPU:0'):
     model.fit(trainingData, targetData, batch_size=1, epochs=1, verbose=1)
     img = model.predict(tf.reshape(trainingData[134,:,:,:],(1,128,128,2)))
     #
-    plt.imshow(to_space_domain(img)[0,:,:]);plt.show()
+    plt.imshow(to_space_domain(img)[0,:,:])
+    plt.savefig("output.png"")
     
     print('FIN')
 
