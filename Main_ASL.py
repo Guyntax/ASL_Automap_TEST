@@ -157,19 +157,25 @@ with tf.device('/GPU:0'):
     model.add(tf.keras.layers.Flatten(input_shape = (32768,)))
     # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
     model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
-    model.add(tf.keras.layers.Reshape((-1,n_H0,n_W0)))
+    model.add(tf.keras.layers.Reshape((n_H0,n_W0,1)))
     
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
-    model.add(tf.keras.layers.Conv2DTranspose(1, 7, strides=(1, 1), padding='same'))
+    model.add(tf.keras.layers.Conv2DTranspose(2, 7, strides=(1, 1), padding='same'))
+    
+    #model.add(tf.keras.layers.Flatten(input_shape = (32768/2,)))
+    # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
+    #model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0*2)))
+    #model.add(tf.keras.layers.Reshape((-1,n_H0,n_W0,2)))
+    
 
     
     model.compile(optimizer='adam', loss=tf.keras.losses.sparse_categorical_crossentropy)
-    model.fit(trainingData, targetData, batch_size=None, epochs=1, verbose=1)
+    #model.fit(trainingData, targetData, batch_size=None, epochs=1, verbose=1)
     
     model.summary()
-    img = model.predict(trainingData[134,:,:,:])
-    plt.imshow(img);plt.show()
+    #img = model.predict(trainingData[134,:,:,:])
+    #plt.imshow(img);plt.show()
     
     print('FIN')
 
