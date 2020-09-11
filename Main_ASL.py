@@ -11,7 +11,7 @@ from random import randrange
 # path = r"C:/Users/Admin/Documents/Python/UPIR/npy/"
 path = r"/home/didier/Documents/ASL_data/"
 
-data = np.zeros([1,128,128,210])
+data = np.zeros([96,128,128,210])
 for i in range(0,96):
     data[i,:,:,:]= np.load(path+"ASL_data{}.npy".format(i))
    # print(i)
