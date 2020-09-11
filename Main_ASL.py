@@ -8,7 +8,7 @@ from random import randrange
 
 
 #%%
-#path = r"C:/Users/Admin/Documents/Python/UPIR/npy/"
+# path = r"C:/Users/Admin/Documents/Python/UPIR/npy/"
 path = r"/home/didier/Documents/ASL_data/"
 
 data = np.zeros([1,128,128,210])
@@ -154,19 +154,20 @@ with tf.device('/GPU:0'):
     # n_out = np.int(trainPlaceHolder.shape[1] * trainPlaceHolder.shape[2])  # size (n_im, n_H0 * n_W0)
     
     model = tf.keras.Sequential()
-    # model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0 * 2)))
-    # model.add(tf.keras.layers.Dense(n_H0*2))
-    # model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
+    model.add(tf.keras.layers.Flatten(input_shape = (32768,)))
+    # model.add(tf.keras.layers.Dense(np.int(n_H0*n_W0*2)))
+    model.add(tf.keras.layers.Dense(np.int(n_H0 * n_W0)))
+    model.add(tf.keras.layers.Reshape((-1,n_H0,n_W0)))
     
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
     model.add(tf.keras.layers.Conv2D(64, 5, strides=(1, 1), padding='same'))
-    model.add(tf.keras.layers.Conv2D(1, 7, strides=(1, 1), padding='same'))
+    model.add(tf.keras.layers.Conv2DTranspose(1, 7, strides=(1, 1), padding='same'))
 
     
     model.compile(optimizer='adam', loss=tf.keras.losses.sparse_categorical_crossentropy)
     model.fit(trainingData, targetData, batch_size=None, epochs=1, verbose=1)
     
-    
+    model.summary()
     img = model.predict(trainingData[134,:,:,:])
     plt.imshow(img);plt.show()
     
