@@ -159,7 +159,7 @@ model.add(tf.keras.layers.Conv2DTranspose(2, 7, strides=(1, 1), padding='same'))
 
 
 
-model.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError)
+model.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
 model.summary()
 
 model.fit(trainingData, targetData, batch_size=100, epochs=5, verbose=1)
@@ -169,4 +169,3 @@ plt.imshow(to_space_domain(img)[0,:,:])
 plt.savefig("output.png")
 
 print('FIN')
-
