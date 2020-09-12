@@ -159,10 +159,10 @@ model.add(tf.keras.layers.Conv2DTranspose(2, 7, strides=(1, 1), padding='same'))
 
 
 
-model.compile(optimizer='adam', loss=tf.keras.losses.categorical_crossentropy)
+model.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError)
 model.summary()
 
-model.fit(trainingData, targetData, batch_size=100, epochs=10, verbose=1)
+model.fit(trainingData, targetData, batch_size=100, epochs=5, verbose=1)
 img = model.predict(tf.reshape(trainingData[134,:,:,:],(1,128,128,2)))
 #
 plt.imshow(to_space_domain(img)[0,:,:])
